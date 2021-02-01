@@ -238,7 +238,7 @@ app.post("/register", async function (req, res) {
     { email: req.body["email"], type: "mailVerification" },
     key
   );
-  let link = process.env.APPLINK + "/#/login/" + token;
+  let link = process.env.APPLINK + "/login/" + token;
   let text = `use token to verify: ${token}`;
   let result = await Mail(req.body["email"], link, text).catch((err) => {
     res.status(500).json({ message: "filed to send mail" });
