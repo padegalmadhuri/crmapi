@@ -55,7 +55,7 @@ async function Mail(toMail, link, data) {
     });
   });
 }
-const uri ="mongodb+srv://Madhuri:MadhuPran123@cluster0.uzatp.mongodb.net/crmdata?retryWrites=true&w=majority"
+const uri ="mongodb+srv://Madhuri:sreedhar123@cluster0.uzatp.mongodb.net/crmdata?retryWrites=true&w=majority"
 // const uri = `mongodb://localhost:27017/?readPreference=primary&ssl=false`;
 const dbName = "crmdata";
 const collName1 = "users";
