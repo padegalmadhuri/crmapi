@@ -143,7 +143,7 @@ app.post('/register', async(req, res) => {
         });
     } else {
         let client = await MongoClient.connect(dbURL).catch((err) => { throw err; });
-        let db = client.db('crm');
+        let db = client.db('crmdata');
         let data = await db.collection('users').findOne({ email }).catch((err) => { throw err; });
         if (data) {
             res.status(400).json({
@@ -187,7 +187,7 @@ app.post('/register', async(req, res) => {
 app.post('/accountverification', async(req, res) => {
     let { verificationToken, email } = req.body;
     let client = await mongodb.connect(dbURL).catch(err => { throw err });
-    let db = client.db('crm');
+    let db = client.db('crmdata');
     let data = await db.collection('users').findOne({ email, verificationToken }).catch(err => { throw err });
     if (data) {
         await db.collection('users').updateOne({ email }, { $set: { verificationToken: '', accountVerified: true } });
@@ -204,7 +204,7 @@ app.post('/accountverification', async(req, res) => {
 app.post('/forgotpassword', async(req, res) => {
     let { email } = req.body;
     let client = await mongodb.connect(dbURL).catch(err => { throw err; });
-    let db = client.db('crm');
+    let db = client.db('crmdata');
     let data = await db.collection('users').findOne({ email }).catch(err => { throw err });
     if (data) {
         let buf = await require('crypto').randomBytes(32);
@@ -240,7 +240,7 @@ app.post('/forgotpassword', async(req, res) => {
 app.post('/resetpassword', async(req, res) => {
     let { email, password, passwordResetToken } = req.body;
     let client = await mongodb.connect(dbURL).catch(err => { throw err });
-    let db = client.db('crm');
+    let db = client.db('crmdata');
     let data = await db.collection('users').findOne({ email, passwordResetToken }).catch(err => { throw err });
     if (data) {
         let saltRounds = 10;
@@ -266,7 +266,7 @@ app.post("/login", async(req, res) => {
         });
     } else {
         let client = await mongodb.connect(dbURL).catch(err => { throw err; });
-        let db = client.db('crm');
+        let db = client.db('crmdata');
         let data = await db.collection('users').findOne({ email }).catch(err => { throw err; });
         if (data) {
             if (data.accountVerified) {
@@ -313,7 +313,7 @@ app.post('/adduser', [authenticate, permission(["admin", "manager"])], async(req
         });
     } else {
         let client = await MongoClient.connect(dbURL).catch((err) => { throw err; });
-        let db = client.db('crm');
+        let db = client.db('crmdata');
         let data = await db.collection('users').findOne({ email }).catch((err) => { throw err; });
         if (data) {
             res.status(400).json({
@@ -363,7 +363,7 @@ app.post('/createlead', [authenticate, accessVerification("create")], async(req,
         });
     } else {
         let client = await mongodb.connect(dbURL).catch(err => { throw err });
-        let db = client.db('crm');
+        let db = client.db('crmdata');
         await db.collection('leads').insertOne(req.body).catch(err => { throw err });
         let managers = await db.collection('users').find({ userType: "manager" }).toArray().catch(err => { throw err; });
         for (let i of managers) {
@@ -417,7 +417,7 @@ app.put('/updatelead', [authenticate, accessVerification("update")], async(req, 
         });
     } else {
         let client = await mongodb.connect(dbURL).catch(err => { throw err });
-        let db = client.db('crm');
+        let db = client.db('crmdata');
         leadId = new ObjectId(leadId);
         delete req.body.leadId;
         await db.collection('leads').updateOne({ "_id": leadId }, { $set: req.body }).catch(err => { throw err });
@@ -435,7 +435,7 @@ app.delete('/deletelead', [authenticate, accessVerification("delete")], async(re
         });
     } else {
         let client = await mongodb.connect(dbURL).catch(err => { throw err });
-        let db = client.db('crm');
+        let db = client.db('crmdata');
         leadId = new ObjectId(leadId);
         delete req.body.leadId;
         await db.collection('leads').deleteOne({ "_id": leadId }).catch(err => { throw err });
@@ -447,7 +447,7 @@ app.delete('/deletelead', [authenticate, accessVerification("delete")], async(re
 });
 app.get('/listlead', [authenticate, accessVerification("view")], async(req, res) => {
     let client = await mongodb.connect(dbURL).catch(err => { throw err });
-    let db = client.db('crm');
+    let db = client.db('crmdata');
     let leads = await db.collection("leads").find().toArray().catch(err => { throw err; });
     client.close();
     res.status(200).json({
@@ -462,7 +462,7 @@ app.post('/createcontact', [authenticate, accessVerification("create")], async(r
         });
     } else {
         let client = await mongodb.connect(dbURL).catch(err => { throw err });
-        let db = client.db('crm');
+        let db = client.db('crmdata');
         await db.collection('contacts').insertOne(req.body).catch(err => { throw err });
         client.close();
         res.status(200).json({
@@ -478,7 +478,7 @@ app.put('/updatecontact', [authenticate, accessVerification("update")], async(re
         });
     } else {
         let client = await mongodb.connect(dbURL).catch(err => { throw err });
-        let db = client.db('crm');
+        let db = client.db('crmdata');
         contactId = new ObjectId(contactId);
         delete req.body.contactId;
         await db.collection('contacts').updateOne({ "_id": contactId }, { $set: req.body }).catch(err => { throw err });
@@ -496,7 +496,7 @@ app.delete('/deletecontact', [authenticate, accessVerification("delete")], async
         });
     } else {
         let client = await mongodb.connect(dbURL).catch(err => { throw err });
-        let db = client.db('crm');
+        let db = client.db('crmdata');
         contactId = new ObjectId(contactId);
         delete req.body.contactId;
         await db.collection('contacts').deleteOne({ "_id": contactId }).catch(err => { throw err });
@@ -508,7 +508,7 @@ app.delete('/deletecontact', [authenticate, accessVerification("delete")], async
 });
 app.get('/listcontacts', [authenticate, accessVerification("view")], async(req, res) => {
     let client = await mongodb.connect(dbURL).catch(err => { throw err });
-    let db = client.db('crm');
+    let db = client.db('crmdata');
     let contacts = await db.collection("contacts").find({}).toArray().catch(err => { throw err; });
     client.close();
     res.status(200).json({
