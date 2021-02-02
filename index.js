@@ -55,8 +55,8 @@ async function Mail(toMail, link, data) {
     });
   });
 }
-const uri = process.env.URL;
-// const uri = `mongodb://localhost:27017/myapp`;
+const uri ="mongodb+srv://Madhuri:sreedhar123@cluster0.uzatp.mongodb.net/crmdata?retryWrites=true&w=majority"
+// const uri = `mongodb://localhost:27017/?readPreference=primary&ssl=false`;
 const dbName = "crmdata";
 const collName1 = "users";
 const collName2 = "leads";
@@ -239,7 +239,7 @@ app.post("/register", async function (req, res) {
     { email: req.body["email"] },
     key
   );
-  console.log(token);
+  console.log(token)
   let link = process.env.APPLINK + "/#/login/" + token;
   let text = `use token to verify: ${token}`;
   let result = await Mail(req.body["email"], link, text).catch((err) => {
