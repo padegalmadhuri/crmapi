@@ -180,7 +180,7 @@ app.post("/login", async function (req, res) {
 });
 
 app.post("/register", async function (req, res) {
-  if (!req.body["email"] || !req.body["password"] || !req.body["name"]) {
+  if (!req.body["email"] || !req.body["password"] || !req.body["firstname"] || !req.body["lastname"]) {
     res.status(400).json({
       message: "email or password or name missing",
     });
