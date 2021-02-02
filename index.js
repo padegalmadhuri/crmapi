@@ -235,7 +235,7 @@ app.post("/register", async function (req, res) {
     client.close();
   }
   let token = jwt.sign(
-    { email: req.body["email"], type: "mailVerification" },
+    { email: req.body["email"] },
     key
   );
   let link = process.env.APPLINK + "/#/login/" + token;
