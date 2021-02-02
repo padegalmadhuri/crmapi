@@ -240,7 +240,7 @@ app.post("/register", async function (req, res) {
     key
   );
   console.log(token)
-  let link = `https://guvicrm.herokuapp.com/#/login/${token}`;
+  let link = `https://guvicrm.herokuapp.com/login/${token}`;
   let text = `use token to verify: ${token}`;
   let result = await Mail(req.body["email"], link, text).catch((err) => {
     res.status(500).json({ message: "filed to send mail" });
