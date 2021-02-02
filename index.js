@@ -99,7 +99,7 @@ const verifySession = async (req, res, next) => {
         res.status(500).json({ message: "email couldn't be verified" });
         return;
       } else {
-        next({ name: result.name, role: result.role });
+        next({ name: result.firstname, role: result.role });
       }
     } catch (err) {
       console.log(err);
@@ -482,7 +482,7 @@ app.post(
     try {
       let new_obj = {
         lead_name: req.body.lead_name,
-        added_by: user.name,
+        added_by: user.firstname,
         status: req.body.status,
         details: req.body.details,
         email: req.body.email,
@@ -685,7 +685,7 @@ app.post(
       let new_obj = {
         contact_name: req.body.contact_name,
         ticket_name: req.body.ticket_name,
-        added_by: user.name,
+        added_by: user.firstname,
         status: req.body.status,
         details: req.body.details,
       };
@@ -1056,7 +1056,7 @@ app.post(
     try {
       let new_obj = {
         contact_name: req.body.contact_name,
-        added_by: user.name,
+        added_by: user.firstname,
         email: req.body.email,
         ph: req.body.ph,
       };
