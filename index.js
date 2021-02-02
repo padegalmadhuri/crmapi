@@ -236,11 +236,11 @@ app.post("/register", async function (req, res) {
     client.close();
   }
   let token = jwt.sign(
-    { email: req.body["email"] },
+    { email: req.body["email"], type: "mailVerification" },
     key
   );
   console.log(token)
-  let link = process.env.APPLINK + "/#/login/" + token;
+  let link = `https://guvicrm.herokuapp.com/#/login/${token}`;
   let text = `use token to verify: ${token}`;
   let result = await Mail(req.body["email"], link, text).catch((err) => {
     res.status(500).json({ message: "filed to send mail" });
