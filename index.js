@@ -40,8 +40,8 @@ async function Mail(toMail, link, data) {
     to: toMail,
     subject: "verification link",
 
-    html: `<p>${data}</p></br>
-    <a href=${link}>Click HERE</a>`,
+    html: `<html><p>${data}</p></br>
+    <a href=${link}>Click HERE</a></html>`,
   };
   return new Promise((resolve, reject) => {
     transporter.sendMail(mailOptions, function (error, info) {
@@ -56,7 +56,7 @@ async function Mail(toMail, link, data) {
   });
 }
 const uri ="mongodb+srv://Madhuri:sreedhar123@cluster0.uzatp.mongodb.net/crmdata?retryWrites=true&w=majority"
-// const uri = `mongodb://localhost:27017/?readPreference=primary&ssl=false`;
+// const uri = `mongodb://localhost:27017/myapp`;
 const dbName = "crmdata";
 const collName1 = "users";
 const collName2 = "leads";
